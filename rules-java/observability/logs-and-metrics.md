@@ -18,9 +18,9 @@ Applies to: `src/main/java/**/*.java` — except:
 
 ## Required Patterns
 
-### Logs — SLF4J
+### Logs
 
-Declare the logger as a `private static final` field named `log` (Lombok `@Slf4j` is acceptable if the project already uses Lombok). The message prefix rule is defined in `log-class-prefix.md`.
+Use the project's configured logging facade. Declare the logger as a `private static final` field named `log` (Lombok `@Slf4j` is acceptable if the project already uses Lombok). The message prefix rule is defined in `log-class-prefix.md`.
 
 ```java
 private static final Logger log = LoggerFactory.getLogger(SettingService.class);
@@ -30,9 +30,9 @@ log.warn("[SettingService] descriptive message for id: {}", id);
 log.error("[SettingService] descriptive message", exception);
 ```
 
-### Metrics — Micrometer
+### Metrics
 
-Inject a `MeterRegistry` through the constructor — never use a global registry. Define metric names as constants, and keep tag cardinality low (no ids, emails, or free text as tag values).
+Use the project's configured metrics library. Inject the metrics registry/client through the constructor — never use a global one. Define metric names as constants, and keep tag cardinality low (no ids, emails, or free text as tag values).
 
 ```java
 private static final String OPERATIONS_METRIC = "setting.operations";
@@ -45,7 +45,9 @@ void create(SettingBody data) {
 }
 ```
 
-Use a `Timer` (`meterRegistry.timer(...)` / `@Timed`) for latency of external calls.
+Use a timer for latency of external calls.
+
+> The snippets above are illustrative. Use whichever logging and metrics libraries the project already adopts.
 
 ## Reference Implementation
 

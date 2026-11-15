@@ -17,24 +17,25 @@ Applies to: `src/**/*.ts` — except:
 
 ## Required Patterns
 
-### Logs — `nbra-logger`
+### Logs
+
+Use the project's configured logging library through a shared logger instance — never `console.log`. Use the appropriate level (`info`, `warn`, `error`) and pass the error object as an extra argument on `error`. The message prefix rule is defined in `log-class-prefix.md`.
 
 ```typescript
-import { logger } from 'nbra-logger';
-
 logger.info('[ClassName] descriptive message');
 logger.warn('[ClassName] descriptive message');
 logger.error('[ClassName] descriptive message', error);
 ```
 
-### Metrics — `nbra-metrics-publisher`
+### Metrics
+
+Use the project's configured metrics library. Publish counters for operations (with a `status` label) and timers/histograms for latency of external calls. Keep label cardinality low (no ids, emails, or free text as label values).
 
 ```typescript
-import { MetricsPublisherFactory, OperationsType } from 'nbra-metrics-publisher';
-
-const publisher = MetricsPublisherFactory.create(...);
-publisher.publish({ value: 1, labels: { status: 'ok' }, type: OperationsType.INC });
+metrics.increment('setting.operations', { operation: 'create', status: 'ok' });
 ```
+
+> The snippets above are illustrative. Use whichever logging and metrics libraries the project already adopts.
 
 ## Reference Implementation
 
