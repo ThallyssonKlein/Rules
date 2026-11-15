@@ -9,11 +9,11 @@ Always use ES module syntax (`import` / `export`). Never use CommonJS (`require`
 
    ```typescript
    // ✅ Correct
-   import { logger } from 'nbra-logger';
+   import express from 'express';
    import { SettingService } from '@services/SettingService';
 
    // ❌ Wrong
-   const logger = require('nbra-logger');
+   const express = require('express');
    const { SettingService } = require('@services/SettingService');
    ```
 
