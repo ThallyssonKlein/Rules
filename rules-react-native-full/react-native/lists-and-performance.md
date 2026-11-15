@@ -8,7 +8,7 @@
 4. **Tune lists when needed:** provide `getItemLayout` for fixed-height rows, and set `initialNumToRender`, `windowSize`, and `removeClippedSubviews` based on profiling — not by default.
 5. **Add pagination (`onEndReached`) and pull-to-refresh** for remote lists; always render explicit empty, loading, and error states.
 6. **Keep expensive work off the JS thread's hot path.** Heavy computation goes in `useMemo`, a background task, or the native side — not in render.
-7. **Animate with native-driven or UI-thread animations** (`useNativeDriver: true`, or Reanimated worklets). Never animate layout properties via `setState` on every frame.
+7. **Animate with native-driven or UI-thread animations** (Reanimated worklets, or `useNativeDriver: true` for the core Animated API). Never animate layout properties via `setState` on every frame.
 8. **Optimize images:** specify explicit dimensions, use appropriately sized assets, and a caching image component for remote images.
 9. **Do not `console.log` in render or in loops** (also blocked by the logging rules).
 10. **Measure before optimizing.** Do not sprinkle `memo`/`useCallback`/`useMemo` without a reason; profile with the React DevTools Profiler / Flipper-equivalent first.
