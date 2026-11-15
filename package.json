@@ -1,0 +1,28 @@
+{
+  "name": "@thallyssonklein/rules",
+  "version": "0.1.1",
+  "type": "module",
+  "description": "Instala regras de código (Java, TypeScript, React Native) em projetos para uso com o Claude Code",
+  "bin": {
+    "rules": "bin/install.js"
+  },
+  "files": [
+    "bin",
+    "rules-java",
+    "rules-react-native-base",
+    "rules-react-native-full",
+    "rules-typescript",
+    "rules-typescript-no-hexagonal"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thallyssonklein/Rules.git"
+  },
+  "license": "MIT"
+}

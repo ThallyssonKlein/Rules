@@ -43,7 +43,7 @@ When writing unit tests, **isolate the subject under test completely**. Every ex
    Verify behavior by checking `expect(mockRepo.findAll).toHaveBeenCalledWith(...)` — not by querying a database or inspecting external state.
 
 6. **Never assert on log calls.**
-   `logger.info`, `logger.warn`, and `logger.error` are observability side-effects, not behavior. Do not mock `nbra-logger` and do not write `expect(logger.info).toHaveBeenCalledWith(...)`. Tests that assert on log output become brittle the moment a message is rephrased and add no confidence about correctness.
+   `logger.info`, `logger.warn`, and `logger.error` are observability side-effects, not behavior. Do not mock the logger and do not write `expect(logger.info).toHaveBeenCalledWith(...)`. Tests that assert on log output become brittle the moment a message is rephrased and add no confidence about correctness.
 
    ```typescript
    // ✅ Correct — assert on observable output, not on logging
