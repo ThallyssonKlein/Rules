@@ -2,7 +2,7 @@
   "name": "@thallyssonklein/rules",
   "version": "0.2.0",
   "type": "module",
-  "description": "Instala regras de código (Java, Go, TypeScript, React, React Native) em projetos para uso com o Claude Code",
+  "description": "Instala regras de código (Java, Kotlin mobile, Go, TypeScript, React, React Native) em projetos para uso com o Claude Code",
   "bin": {
     "rules": "bin/install.js"
   },
@@ -10,6 +10,7 @@
     "bin",
     "rules-golang",
     "rules-java",
+    "rules-kotlin-mobile",
     "rules-react-native-base",
     "rules-react-native-full",
     "rules-reactjs-base",
