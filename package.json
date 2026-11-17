@@ -10,6 +10,7 @@
     "bin",
     "rules-golang",
     "rules-java",
+    "rules-java-legacy",
     "rules-kotlin-mobile",
     "rules-react-native-base",
     "rules-react-native-full",
