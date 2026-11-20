@@ -17,7 +17,9 @@
     "rules-react-native-full",
     "rules-react-native-full-design-patterns",
     "rules-reactjs-base",
+    "rules-reactjs-base-design-patterns",
     "rules-reactjs-full",
+    "rules-reactjs-full-design-patterns",
     "rules-typescript",
     "rules-typescript-design-patterns",
     "rules-typescript-no-hexagonal"
