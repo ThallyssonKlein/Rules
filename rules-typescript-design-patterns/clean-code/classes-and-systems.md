@@ -11,12 +11,12 @@ A class must have one reason to change. A system is healthy when each of its cla
    // ✅ Correct — each class owns one responsibility
    class EventProducerController {
      async publish(req: Request, res: Response): Promise<void> {
-       await this.eventProducerUseCase.publishEvent(req.body);
+       await this.eventProducerService.publishEvent(req.body);
        res.status(202).send();
      }
    }
 
-   class EventProducerUseCase {
+   class EventProducerService {
      async publishEvent(params: PublishEventParams): Promise<void> {
        await this.eventPublisher.publish(params);
      }
@@ -39,8 +39,8 @@ A class must have one reason to change. A system is healthy when each of its cla
 
    ```typescript
    // ✅ Correct — every method uses the single injected dependency
-   class SettingUseCase {
-     constructor(private readonly settingRepository: ISettingRepositoryPort) {}
+   class SettingService {
+     constructor(private readonly settingRepository: ISettingRepository) {}
 
      async getAll(): Promise<Setting[]> { return this.settingRepository.findAll(); }
      async getById(id: string): Promise<Setting> { return this.settingRepository.findById(id); }
@@ -48,9 +48,9 @@ A class must have one reason to change. A system is healthy when each of its cla
    }
 
    // ❌ Wrong — two unrelated groups of methods share one class
-   class SettingAndCacheUseCase {
+   class SettingAndCacheService {
      constructor(
-       private readonly settingRepository: ISettingRepositoryPort,
+       private readonly settingRepository: ISettingRepository,
        private readonly cacheClient: ICacheClient,
      ) {}
 
@@ -70,7 +70,7 @@ A class must have one reason to change. A system is healthy when each of its cla
 
    ```typescript
    // ✅ Correct — intent expressed through a named private method; no duplication
-   class DomainUseCase {
+   class DomainService {
      async fetchById(id: string): Promise<Domain> {
        const domain = await this.domainRepository.findById(id);
        this.assertExists(domain, id);
@@ -78,21 +78,21 @@ A class must have one reason to change. A system is healthy when each of its cla
      }
 
      private assertExists(domain: Domain | null, id: string): asserts domain is Domain {
-       if (!domain) throw new Error(`[DomainUseCase] Domain not found for id: ${id}`);
+       if (!domain) throw new Error(`[DomainService] Domain not found for id: ${id}`);
      }
    }
 
    // ❌ Wrong — intent buried in inline logic duplicated across methods
-   class DomainUseCase {
+   class DomainService {
      async fetchById(id: string): Promise<Domain> {
        const domain = await this.domainRepository.findById(id);
-       if (!domain) throw new Error(`[DomainUseCase] Domain not found for id: ${id}`);
+       if (!domain) throw new Error(`[DomainService] Domain not found for id: ${id}`);
        return domain;
      }
 
      async update(id: string, data: DomainBody): Promise<void> {
        const domain = await this.domainRepository.findById(id);
-       if (!domain) throw new Error(`[DomainUseCase] Domain not found for id: ${id}`); // duplicated
+       if (!domain) throw new Error(`[DomainService] Domain not found for id: ${id}`); // duplicated
        await this.domainRepository.update(id, data);
      }
    }

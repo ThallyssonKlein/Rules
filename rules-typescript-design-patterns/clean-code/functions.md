@@ -8,7 +8,7 @@ Functions must be small, single-purpose, and predictable.
    If you can describe what it does with "and", split it.
 
 2. **Keep all statements at the same abstraction level.**
-   A use case method orchestrates calls to ports — it does not format strings or parse dates inline.
+   A service method orchestrates calls to repositories and other dependencies — it does not format strings or parse dates inline.
 
 3. **Limit parameters to two. Group anything beyond that into a typed object.**
 

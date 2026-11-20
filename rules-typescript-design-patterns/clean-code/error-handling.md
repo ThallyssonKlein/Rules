@@ -27,7 +27,7 @@ Errors are part of the domain. Handle them explicitly, with context, and without
    ```typescript
    // ✅ Correct — message includes class, operation, and failing value
    private assertExists(domain: Domain | null, id: string): asserts domain is Domain {
-     if (!domain) throw new Error(`[DomainUseCase] Domain not found for id: ${id}`);
+     if (!domain) throw new Error(`[DomainService] Domain not found for id: ${id}`);
    }
 
    // ❌ Wrong — no origin, no context
@@ -41,7 +41,7 @@ Errors are part of the domain. Handle them explicitly, with context, and without
    // ✅ Correct — absence expressed as a thrown exception
    async fetchById(id: string): Promise<Domain> {
      const domain = await this.domainRepository.findById(id);
-     if (!domain) throw new Error(`[DomainUseCase] Domain not found for id: ${id}`);
+     if (!domain) throw new Error(`[DomainService] Domain not found for id: ${id}`);
      return domain;
    }
 
@@ -61,7 +61,7 @@ Errors are part of the domain. Handle them explicitly, with context, and without
    // ✅ Correct — controller logs once at the boundary
    async fetchById(req: Request, res: Response): Promise<void> {
      try {
-       const domain = await this.domainUseCase.fetchById(req.params.id);
+       const domain = await this.domainService.fetchById(req.params.id);
        res.status(200).json(domain);
      } catch (err: unknown) {
        logger.error('[DomainController] failed to fetch domain', err);
@@ -69,12 +69,12 @@ Errors are part of the domain. Handle them explicitly, with context, and without
      }
    }
 
-   // ❌ Wrong — use case also logs the same error
+   // ❌ Wrong — service also logs the same error
    async fetchById(id: string): Promise<Domain> {
      try {
        ...
      } catch (err: unknown) {
-       logger.error('[DomainUseCase] failed to fetch domain', err); // duplicate
+       logger.error('[DomainService] failed to fetch domain', err); // duplicate
        throw err;
      }
    }

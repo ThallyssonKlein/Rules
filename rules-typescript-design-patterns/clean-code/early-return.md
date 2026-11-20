@@ -10,8 +10,8 @@ Exit a function as soon as preconditions fail. Never wrap the happy path in a co
    ```typescript
    // ✅ Correct — guards up top, happy path flat
    async publishEvent(params: PublishEventParams): Promise<void> {
-     if (!params.tenantId) throw new Error('[EventProducerUseCase] tenantId is required');
-     if (!params.eventType) throw new Error('[EventProducerUseCase] eventType is required');
+     if (!params.tenantId) throw new Error('[EventProducerService] tenantId is required');
+     if (!params.eventType) throw new Error('[EventProducerService] eventType is required');
 
      const hub = this.resolveHub(params.tenantId);
      await hub.publish(params);
@@ -35,7 +35,7 @@ Exit a function as soon as preconditions fail. Never wrap the happy path in a co
    // ✅ Correct — no else after throw
    async fetchById(id: string): Promise<Domain> {
      const domain = await this.domainRepository.findById(id);
-     if (!domain) throw new Error(`[DomainUseCase] Domain not found for id: ${id}`);
+     if (!domain) throw new Error(`[DomainService] Domain not found for id: ${id}`);
 
      return domain;
    }
@@ -44,7 +44,7 @@ Exit a function as soon as preconditions fail. Never wrap the happy path in a co
    async fetchById(id: string): Promise<Domain> {
      const domain = await this.domainRepository.findById(id);
      if (!domain) {
-       throw new Error(`[DomainUseCase] Domain not found for id: ${id}`);
+       throw new Error(`[DomainService] Domain not found for id: ${id}`);
      } else {
        return domain;
      }
@@ -86,7 +86,7 @@ Exit a function as soon as preconditions fail. Never wrap the happy path in a co
        return;
      }
 
-     const result = await this.useCase.execute(req.body);
+     const result = await this.service.execute(req.body);
      res.status(HTTP_CREATED).json(result);
    }
 
@@ -95,7 +95,7 @@ Exit a function as soon as preconditions fail. Never wrap the happy path in a co
      if (this.isProduction()) {
        res.status(HTTP_METHOD_NOT_ALLOWED).send();
      } else {
-       const result = await this.useCase.execute(req.body);
+       const result = await this.service.execute(req.body);
        res.status(HTTP_CREATED).json(result);
      }
    }

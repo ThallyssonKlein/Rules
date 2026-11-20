@@ -20,7 +20,7 @@ All mock setup — values, return values, and subject instantiation — must liv
 ```typescript
 // ✅ Correct — mock setup inside it
 it('should return settings', async () => {
-  const mockRepo: jest.Mocked<ISettingRepositoryPort> = {
+  const mockRepo: jest.Mocked<ISettingRepository> = {
     find: jest.fn().mockResolvedValue([{ id: '1', name: 'x' }]),
     create: jest.fn(),
     update: jest.fn(),
@@ -28,8 +28,8 @@ it('should return settings', async () => {
     findOne: jest.fn(),
   };
 
-  const useCase = new SettingUseCase(mockRepo);
-  const result = await useCase.findSettings('x');
+  const service = new SettingService(mockRepo);
+  const result = await service.findSettings('x');
 
   expect(mockRepo.find).toHaveBeenCalledWith({ name: 'x' });
   expect(result).toEqual([{ id: '1', name: 'x' }]);
@@ -38,13 +38,13 @@ it('should return settings', async () => {
 
 ```typescript
 // ❌ Wrong — mock hoisted to describe / beforeEach
-describe('SettingUseCase', () => {
-  let mockRepo: jest.Mocked<ISettingRepositoryPort>;
-  let useCase: SettingUseCase;
+describe('SettingService', () => {
+  let mockRepo: jest.Mocked<ISettingRepository>;
+  let service: SettingService;
 
   beforeEach(() => {
     mockRepo = { find: jest.fn(), ... };  // ← violates this rule
-    useCase = new SettingUseCase(mockRepo);
+    service = new SettingService(mockRepo);
   });
 
   it('should return settings', async () => {

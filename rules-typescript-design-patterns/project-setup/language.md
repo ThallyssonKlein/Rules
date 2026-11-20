@@ -20,11 +20,11 @@ Applies to every file in the repository:
 2. **All string literals intended for logging or errors must be English.**
    ```typescript
    // ✅ Correct
-   logger.info('[SettingUseCase] Setting not found');
+   logger.info('[SettingService] Setting not found');
    throw new Error('Invalid setting id');
 
    // ❌ Wrong
-   logger.info('[SettingUseCase] Configuração não encontrada');
+   logger.info('[SettingService] Configuração não encontrada');
    throw new Error('Id de configuração inválido');
    ```
 
@@ -40,12 +40,12 @@ Applies to every file in the repository:
 4. **All test descriptions must be English.**
    ```typescript
    // ✅ Correct
-   describe('SettingUseCase', () => {
+   describe('SettingService', () => {
      it('should return all settings for the given tenant', async () => { ... });
    });
 
    // ❌ Wrong
-   describe('SettingUseCase', () => {
+   describe('SettingService', () => {
      it('deve retornar todas as configurações do tenant', async () => { ... });
    });
    ```

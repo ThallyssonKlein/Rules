@@ -11,8 +11,8 @@ Every log statement must be prefixed with `[ClassName]` — the exact name of th
    ```typescript
    // ✅ Correct
    logger.info('[EventProducerController] request received');
-   logger.warn('[EventProducerUseCase] event not found');
-   logger.error('[EventProducerAdapter] failed to publish', err);
+   logger.warn('[EventProducerService] event not found');
+   logger.error('[EventProducerClient] failed to publish', err);
 
    // ❌ Wrong — no prefix
    logger.info('request received');

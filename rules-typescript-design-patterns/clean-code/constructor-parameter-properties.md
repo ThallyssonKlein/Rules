@@ -23,12 +23,12 @@ Use TypeScript's **parameter property shorthand** to declare and initialize clas
 ```typescript
 // ✅ Correct — parameter property shorthand
 class SettingController {
-  constructor(private readonly settingUseCase: ISettingUseCase) {}
+  constructor(private readonly settingService: ISettingService) {}
 }
 
-class SettingUseCase {
+class SettingService {
   constructor(
-    private readonly settingRepository: ISettingRepositoryPort,
+    private readonly settingRepository: ISettingRepository,
     private readonly logger: ILogger,
   ) {}
 }
@@ -37,10 +37,10 @@ class SettingUseCase {
 ```typescript
 // ❌ Wrong — redundant top-level declaration
 class SettingController {
-  private readonly settingUseCase: ISettingUseCase; // ← remove this
+  private readonly settingService: ISettingService; // ← remove this
 
-  constructor(settingUseCase: ISettingUseCase) {
-    this.settingUseCase = settingUseCase; // ← and this
+  constructor(settingService: ISettingService) {
+    this.settingService = settingService; // ← and this
   }
 }
 ```

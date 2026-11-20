@@ -15,7 +15,7 @@ Code must be readable top-to-bottom. Structure and placement are part of the des
 
    ```typescript
    // ✅ Correct — public interface at top, private helpers at bottom
-   class EventProducerUseCase {
+   class EventProducerService {
      async publishEvent(params: PublishEventParams): Promise<void> { ... }
 
      private buildPayload(params: PublishEventParams): EventPayload { ... }
@@ -23,7 +23,7 @@ Code must be readable top-to-bottom. Structure and placement are part of the des
    }
 
    // ❌ Wrong — private helpers above public methods
-   class EventProducerUseCase {
+   class EventProducerService {
      private buildPayload(params: PublishEventParams): EventPayload { ... }
      private validateTenant(tenantId: string): void { ... }
 

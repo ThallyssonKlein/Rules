@@ -1,18 +1,18 @@
 ---
 name: Logs and Metrics Rule
-description: Every src/ implementation file (not ports, not domain models, not tests) must include structured logs and metrics.
+description: Every src/ implementation file (not interfaces, not plain models, not tests) must include structured logs and metrics.
 type: feedback
 ---
 
 # Logs and Metrics Rule
 
-When writing or editing any implementation file under `src/` (controllers, use cases, adapters), **always include both structured logs and metrics**.
+When writing or editing any implementation file under `src/` (controllers, services, repositories), **always include both structured logs and metrics**.
 
 ## Scope
 
 Applies to: `src/**/*.ts` — except:
-- `src/**/ports/**` — interfaces don't need metrics
-- `src/**/domain/**` — domain models don't need metrics
+- `src/**/interfaces/**` — interfaces don't need metrics
+- `src/**/models/**` — plain models don't need metrics
 - `*.spec.ts` — test files
 
 ## Required Patterns
@@ -39,4 +39,4 @@ metrics.increment('setting.operations', { operation: 'create', status: 'ok' });
 
 ## Reference Implementation
 
-See `src/adapter/inbound/http/controller/SettingController.ts` for the canonical example of both patterns applied together.
+See `src/controllers/SettingController.ts` for the canonical example of both patterns applied together.

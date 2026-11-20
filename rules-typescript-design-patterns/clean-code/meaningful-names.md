@@ -56,11 +56,11 @@ Every identifier — variable, function, class, type, interface — must reveal 
    ```
 
 5. **Classes must be nouns; methods must be verbs.**
-   A class name describes a thing (`Customer`, `OrderRepository`, `EventProducerAdapter`). A method name describes an action (`fetchById`, `publishEvent`, `validateSchema`).
+   A class name describes a thing (`Customer`, `OrderRepository`, `EventProducerClient`). A method name describes an action (`fetchById`, `publishEvent`, `validateSchema`).
 
    ```typescript
    // ✅ Correct
-   class DomainUseCase { ... }
+   class DomainService { ... }
    fetchAll(): Promise<Domain[]> { ... }
    deleteById(id: string): Promise<void> { ... }
 

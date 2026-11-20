@@ -11,24 +11,24 @@ Always use `async/await` to handle promises. Never use raw `.then()` / `.catch()
    // ✅ Correct
    async fetchById(id: string): Promise<Domain> {
      const domain = await this.domainRepository.findById(id);
-     if (!domain) throw new Error(`[DomainUseCase] Domain not found for id: ${id}`);
+     if (!domain) throw new Error(`[DomainService] Domain not found for id: ${id}`);
      return domain;
    }
 
    // ❌ Wrong — promise chain instead of await
    fetchById(id: string): Promise<Domain> {
      return this.domainRepository.findById(id).then(domain => {
-       if (!domain) throw new Error(`[DomainUseCase] Domain not found for id: ${id}`);
+       if (!domain) throw new Error(`[DomainService] Domain not found for id: ${id}`);
        return domain;
      });
    }
    ```
 
 2. **Never use Node-style callbacks (`(err, result) => {}`).**
-   Wrap callback-based APIs with `util.promisify` or a manual `new Promise()` wrapper at the adapter boundary. The wrapper is the only place a callback is allowed; all callers use `await`.
+   Wrap callback-based APIs with `util.promisify` or a manual `new Promise()` wrapper at the integration boundary. The wrapper is the only place a callback is allowed; all callers use `await`.
 
    ```typescript
-   // ✅ Correct — callback wrapped once at the adapter boundary
+   // ✅ Correct — callback wrapped once at the integration boundary
    import { promisify } from 'util';
    const readFileAsync = promisify(fs.readFile);
 
@@ -52,11 +52,11 @@ Always use `async/await` to handle promises. Never use raw `.then()` / `.catch()
    ```typescript
    // ✅ Correct
    const result = await this.eventPublisher.publish(payload);
-   logger.info('[EventProducerAdapter] event published');
+   logger.info('[EventProducerClient] event published');
 
    // ❌ Wrong — await then chain on the same call
    const result = await this.eventPublisher.publish(payload).then(r => {
-     logger.info('[EventProducerAdapter] event published');
+     logger.info('[EventProducerClient] event published');
      return r;
    });
    ```
@@ -68,7 +68,7 @@ Always use `async/await` to handle promises. Never use raw `.then()` / `.catch()
    // ✅ Correct
    async publish(req: Request, res: Response): Promise<void> {
      try {
-       await this.eventProducerUseCase.publishEvent(req.body);
+       await this.eventProducerService.publishEvent(req.body);
        res.status(HTTP_ACCEPTED).send();
      } catch (err: unknown) {
        logger.error('[EventProducerController] failed to publish event', err);
@@ -78,7 +78,7 @@ Always use `async/await` to handle promises. Never use raw `.then()` / `.catch()
 
    // ❌ Wrong — .catch() hides the flow and makes early-return harder
    async publish(req: Request, res: Response): Promise<void> {
-     await this.eventProducerUseCase.publishEvent(req.body)
+     await this.eventProducerService.publishEvent(req.body)
        .then(() => res.status(HTTP_ACCEPTED).send())
        .catch(err => res.status(HTTP_INTERNAL_SERVER_ERROR).send());
    }

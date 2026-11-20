@@ -32,10 +32,10 @@ Every numeric (or string) literal that carries domain meaning must be extracted 
    // ✅ Correct — module-scoped, used by multiple methods in the file
    const MAX_PAYLOAD_SIZE_BYTES = 65_536;
 
-   export class EventProducerAdapter {
+   export class EventProducerClient {
      async publish(payload: Buffer): Promise<void> {
        if (payload.byteLength > MAX_PAYLOAD_SIZE_BYTES) {
-         throw new Error('[EventProducerAdapter] payload exceeds size limit');
+         throw new Error('[EventProducerClient] payload exceeds size limit');
        }
        // ...
      }

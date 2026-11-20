@@ -23,19 +23,19 @@ When writing unit tests, **isolate the subject under test completely**. Every ex
 ## Hard Rules
 
 1. **Mock all dependencies injected into the subject under test.**
-   Use `jest.fn()` for individual functions and `jest.mock()` for modules. Never instantiate real implementations of repositories, use cases, or adapters inside a unit test.
+   Use `jest.fn()` for individual functions and `jest.mock()` for modules. Never instantiate real implementations of repositories, services, or external clients inside a unit test.
 
 2. **Never test more than one layer at a time.**
-   - Testing a Route? Mock the Controller or use `supertest` against the Express router — do not instantiate real use cases.
-   - Testing a Controller? Mock the UseCase — do not instantiate a real UseCase.
-   - Testing a UseCase? Mock the repository port — do not use a real adapter.
-   - Testing an Adapter? Mock the external client (e.g., mongoose model, Redis client, Azure SDK) — do not connect to a real service.
+   - Testing a Route? Mock the Controller or use `supertest` against the Express router — do not instantiate real services.
+   - Testing a Controller? Mock the Service — do not instantiate a real Service.
+   - Testing a Service? Mock the repository — do not use a real database implementation.
+   - Testing a Repository or API client? Mock the underlying client (e.g., mongoose model, Redis client, Azure SDK) — do not connect to a real service.
    - Testing a Schema? Call the Zod/Joi parser directly with valid and invalid inputs — no HTTP layer needed.
 
    Every testable layer must have its own test file. Do not skip layers.
 
-3. **Never import concrete adapters or infrastructure in use case tests.**
-   Use case tests must only import the use case class and the port interface. Adapters (`src/adapter/`) must never be imported in `tests/application/` tests.
+3. **Never import concrete repositories or infrastructure in service tests.**
+   Service tests must only import the service class and the repository interface. Concrete repositories (`src/repositories/`) must never be imported in `tests/services/` tests.
 
 4. **Never call `mongoose.connect()`, Redis, or any external service** in unit tests — even inside a `beforeAll`. If a test file touches real infrastructure, it is an integration test, not a unit test, and must be placed and labeled accordingly.
 
@@ -49,16 +49,16 @@ When writing unit tests, **isolate the subject under test completely**. Every ex
    // ✅ Correct — assert on observable output, not on logging
    it('should throw when domain is not found', async () => {
      const mockRepo = makeMockRepo({ findById: jest.fn().mockResolvedValue(null) });
-     const useCase = new DomainUseCase(mockRepo);
+     const service = new DomainService(mockRepo);
 
-     await expect(useCase.fetchById('x')).rejects.toThrow();
+     await expect(service.fetchById('x')).rejects.toThrow();
    });
 
    // ❌ Wrong — asserting on a log side-effect
    it('should log when domain is not found', async () => {
      jest.spyOn(logger, 'error');
      // ...
-     expect(logger.error).toHaveBeenCalledWith('[DomainUseCase] Domain not found for id: x');
+     expect(logger.error).toHaveBeenCalledWith('[DomainService] Domain not found for id: x');
    });
    ```
 
@@ -69,7 +69,7 @@ When writing unit tests, **isolate the subject under test completely**. Every ex
 
 ```typescript
 // ✅ Mock builder — defined at file scope, called inside each it
-function makeMockRepo(overrides?: Partial<jest.Mocked<ISettingRepositoryPort>>): jest.Mocked<ISettingRepositoryPort> {
+function makeMockRepo(overrides?: Partial<jest.Mocked<ISettingRepository>>): jest.Mocked<ISettingRepository> {
   return {
     findAll: jest.fn(),
     findById: jest.fn(),
@@ -80,19 +80,19 @@ function makeMockRepo(overrides?: Partial<jest.Mocked<ISettingRepositoryPort>>):
   };
 }
 
-// ✅ UseCase unit test — builder called inside it
+// ✅ Service unit test — builder called inside it
 it('should return all settings', async () => {
   const mockRepo = makeMockRepo({ findAll: jest.fn().mockResolvedValue([{ id: '1' }]) });
-  const useCase = new SettingUseCase(mockRepo);
+  const service = new SettingService(mockRepo);
 
-  const result = await useCase.getAll();
+  const result = await service.getAll();
 
   expect(mockRepo.findAll).toHaveBeenCalled();
   expect(result).toEqual([{ id: '1' }]);
 });
 
 // ✅ Controller unit test — same pattern
-function makeMockUseCase(overrides?: Partial<jest.Mocked<ISettingUseCase>>): jest.Mocked<ISettingUseCase> {
+function makeMockService(overrides?: Partial<jest.Mocked<ISettingService>>): jest.Mocked<ISettingService> {
   return {
     getAll: jest.fn(),
     getById: jest.fn(),
@@ -104,8 +104,8 @@ function makeMockUseCase(overrides?: Partial<jest.Mocked<ISettingUseCase>>): jes
 }
 
 it('should respond 200 with settings', async () => {
-  const mockUseCase = makeMockUseCase({ getAll: jest.fn().mockResolvedValue([{ id: '1' }]) });
-  const controller = new SettingController(mockUseCase);
+  const mockService = makeMockService({ getAll: jest.fn().mockResolvedValue([{ id: '1' }]) });
+  const controller = new SettingController(mockService);
   // ...
 });
 ```
@@ -113,7 +113,7 @@ it('should respond 200 with settings', async () => {
 ```typescript
 // ❌ Wrong — inline mock object duplicated across every it (use a builder instead)
 it('test A', async () => {
-  const mockRepo: jest.Mocked<ISettingRepositoryPort> = {
+  const mockRepo: jest.Mocked<ISettingRepository> = {
     findAll: jest.fn(),
     findById: jest.fn(),
     create: jest.fn(),
@@ -124,19 +124,19 @@ it('test A', async () => {
 });
 
 it('test B', async () => {
-  const mockRepo: jest.Mocked<ISettingRepositoryPort> = { // duplicated shape
+  const mockRepo: jest.Mocked<ISettingRepository> = { // duplicated shape
     findAll: jest.fn(),
     // ...
   };
 });
 
-// ❌ Wrong — real repository injected into use case test
-const realRepo = new SettingMongoAdapter(connection);
-const useCase = new SettingUseCase(realRepo); // crosses layer boundary
+// ❌ Wrong — real repository injected into service test
+const realRepo = new SettingMongoRepository(connection);
+const service = new SettingService(realRepo); // crosses layer boundary
 
-// ❌ Wrong — real use case injected into controller test
-const realUseCase = new SettingUseCase(mockRepo);
-const controller = new SettingController(realUseCase); // crosses layer boundary
+// ❌ Wrong — real service injected into controller test
+const realService = new SettingService(mockRepo);
+const controller = new SettingController(realService); // crosses layer boundary
 ```
 
 ## Why

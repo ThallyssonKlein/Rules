@@ -10,11 +10,11 @@ Always use ES module syntax (`import` / `export`). Never use CommonJS (`require`
    ```typescript
    // ✅ Correct
    import express from 'express';
-   import { SettingUseCase } from '@application/usecases/SettingUseCase';
+   import { SettingService } from '@services/SettingService';
 
    // ❌ Wrong
    const express = require('express');
-   const { SettingUseCase } = require('@application/usecases/SettingUseCase');
+   const { SettingService } = require('@services/SettingService');
    ```
 
 2. **Always use `export` or `export default` to expose values.**
@@ -22,14 +22,14 @@ Always use ES module syntax (`import` / `export`). Never use CommonJS (`require`
 
    ```typescript
    // ✅ Correct
-   export class SettingUseCase { ... }
+   export class SettingService { ... }
    export { RouterFactory };
-   export default SettingUseCase;
+   export default SettingService;
 
    // ❌ Wrong
-   module.exports = SettingUseCase;
+   module.exports = SettingService;
    module.exports = { RouterFactory };
-   exports.SettingUseCase = SettingUseCase;
+   exports.SettingService = SettingService;
    ```
 
 3. **Prefer named exports over default exports for classes and functions.**
@@ -37,14 +37,14 @@ Always use ES module syntax (`import` / `export`). Never use CommonJS (`require`
 
    ```typescript
    // ✅ Correct — named export
-   export class EventProducerUseCase { ... }
-   export interface IEventProducerUseCase { ... }
+   export class EventProducerService { ... }
+   export interface IEventProducerService { ... }
 
    // ✅ Acceptable — default export for a single primary class per file
-   export default class EventProducerUseCase { ... }
+   export default class EventProducerService { ... }
 
    // ❌ Wrong — CommonJS style default
-   module.exports = EventProducerUseCase;
+   module.exports = EventProducerService;
    ```
 
 4. **Never use dynamic `require()` as a workaround for circular dependencies.**
@@ -52,8 +52,8 @@ Always use ES module syntax (`import` / `export`). Never use CommonJS (`require`
 
    ```typescript
    // ❌ Wrong — dynamic require to break a cycle
-   function getUseCase() {
-     return require('./EventProducerUseCase').EventProducerUseCase;
+   function getService() {
+     return require('./EventProducerService').EventProducerService;
    }
    ```
 
@@ -62,7 +62,7 @@ Always use ES module syntax (`import` / `export`). Never use CommonJS (`require`
    ```typescript
    // ✅ Correct
    export { RouterFactory } from './router-factory';
-   export type { ISettingUseCase } from '@application/ports/inbound/ISettingUseCase';
+   export type { ISettingService } from '@services/ISettingService';
 
    // ❌ Wrong
    const { RouterFactory } = require('./router-factory');

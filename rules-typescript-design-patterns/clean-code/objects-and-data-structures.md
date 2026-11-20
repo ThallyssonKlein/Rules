@@ -28,12 +28,12 @@ Objects hide data behind abstractions and expose behavior. Data structures expos
    // ✅ Correct — talks only to its direct collaborator
    class EventProducerController {
      async publish(req: Request, res: Response): Promise<void> {
-       await this.eventProducerUseCase.publishEvent(req.body);
+       await this.eventProducerService.publishEvent(req.body);
        res.status(202).send();
      }
    }
 
-   // ❌ Wrong — controller reaches into the use case's internals through a chain
+   // ❌ Wrong — controller reaches into the service's internals through a chain
    const connectionString = req.app.get('db').getConfig().getConnectionString();
    ```
 
@@ -49,7 +49,7 @@ Objects hide data behind abstractions and expose behavior. Data structures expos
    }
 
    // ✅ Correct — pure object: data hidden, only behavior exposed
-   class EventProducerUseCase {
+   class EventProducerService {
      constructor(private readonly eventPublisher: IEventPublisher) {}
      async publishEvent(params: PublishEventBody): Promise<void> { ... }
    }
@@ -64,7 +64,7 @@ Objects hide data behind abstractions and expose behavior. Data structures expos
 
 4. **Choose the right shape for the context.**
    - Use **interfaces / plain types** (data structures) for DTOs, request bodies, response shapes, and configuration objects.
-   - Use **classes** (objects) for use cases, controllers, adapters, and any type that encapsulates behavior behind a port interface.
+   - Use **classes** (objects) for services, controllers, repositories, and any type that encapsulates behavior behind an interface.
 
 ## Why
 

@@ -27,14 +27,14 @@ Ensure a class has only one instance and provide a global point of access to it.
 // ✅ Correct — "singleton" by lifetime: one instance created at the composition root and injected
 const pool = new PgPool(config.database);
 const userRepository = new PgUserRepository(pool);
-const createUser = new CreateUserUseCase(userRepository);
+const createUser = new CreateUserService(userRepository);
 
 // ❌ Wrong — global access point hides the dependency and blocks test isolation
 class Database {
   private static instance?: Database;
   static getInstance(): Database { return (this.instance ??= new Database()); }
 }
-class CreateUserUseCase { run() { Database.getInstance().insert(/* ... */); } }
+class CreateUserService { run() { Database.getInstance().insert(/* ... */); } }
 ```
 
 ## Related Patterns
