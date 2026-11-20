@@ -10,7 +10,7 @@
     "bin",
     "rules-golang",
     "rules-java-no-hexagonal",
-    "rules-java-legacy",
+    "rules-java-legacy-no-hexagonal",
     "rules-kotlin-mobile",
     "rules-react-native-base",
     "rules-react-native-full",
