@@ -9,7 +9,7 @@
   "files": [
     "bin",
     "rules-golang",
-    "rules-java",
+    "rules-java-no-hexagonal",
     "rules-java-legacy",
     "rules-kotlin-mobile",
     "rules-react-native-base",

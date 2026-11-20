@@ -45,7 +45,7 @@ try {
 
 ## No metrics library is currently configured in this stack
 
-There is no Micrometer/Dropwizard Metrics (or similar) dependency in this workspace, so **do not add metric-emitting code** (counters, timers, gauges) as part of a change — there is nothing in the build to collect or export them, and a half-wired metrics call is dead code. If the team later adopts a metrics library in a module, update this rule with the required pattern, matching how the original (non-legacy) rules-java pack documents its logs-and-metrics rule.
+There is no Micrometer/Dropwizard Metrics (or similar) dependency in this workspace, so **do not add metric-emitting code** (counters, timers, gauges) as part of a change — there is nothing in the build to collect or export them, and a half-wired metrics call is dead code. If the team later adopts a metrics library in a module, update this rule with the required pattern, matching how the original (non-legacy) rules-java-no-hexagonal pack documents its logs-and-metrics rule.
 
 ## Why
 

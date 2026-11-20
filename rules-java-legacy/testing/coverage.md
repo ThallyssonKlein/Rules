@@ -19,7 +19,7 @@ When writing or editing a `Service`, `Dao`, `Processor`, or similar business cla
 There is no JaCoCo (or Emma/Cobertura) setup wired into the Ant build, and no Maven/Gradle goal to enforce a percentage threshold. This means:
 - There is **no build-enforced gate** — a PR can merge with untested new logic, so review has to catch that manually.
 - Do not invent a coverage percentage claim ("this is at 80%") without a tool that actually measured it. If you want to check coverage locally, use an IDE-integrated tool (e.g. the Eclipse EclEmma plugin) and treat its number as directional, not a hard gate.
-- If the team later adds a coverage tool (an Ant `jacoco` task, or similar) to a module, update this rule with the concrete command and threshold, matching how the original (non-legacy) rules-java pack documents its JaCoCo-based rule.
+- If the team later adds a coverage tool (an Ant `jacoco` task, or similar) to a module, update this rule with the concrete command and threshold, matching how the original (non-legacy) rules-java-no-hexagonal pack documents its JaCoCo-based rule.
 
 ## Why
 
