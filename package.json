@@ -17,6 +17,7 @@
     "rules-reactjs-base",
     "rules-reactjs-full",
     "rules-typescript",
+    "rules-typescript-design-patterns",
     "rules-typescript-no-hexagonal"
   ],
   "engines": {
