@@ -12,6 +12,7 @@
     "rules-java-no-hexagonal",
     "rules-java-legacy-no-hexagonal",
     "rules-kotlin-mobile",
+    "rules-kotlin-mobile-design-patterns",
     "rules-react-native-base",
     "rules-react-native-base-design-patterns",
     "rules-react-native-full",
